@@ -41,9 +41,8 @@ public class AirportDaoImpl implements AirportDAO {
         try (PreparedStatement ps = connection.prepareStatement(FIND_BY_ID)) {
             ps.setInt(1, id);
             try (ResultSet resultSet = ps.executeQuery()) {
-                while (resultSet.next()) {
+                if (resultSet.next()) {
                     airportEntity = (AirportEntity) new Transformer(AirportEntity.class).fromResultSetToEntity(resultSet);
-                    break;
                 }
             }
         }

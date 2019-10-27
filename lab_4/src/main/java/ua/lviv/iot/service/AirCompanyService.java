@@ -11,19 +11,19 @@ public class AirCompanyService {
         return new AirCompanyDaoImpl().findAll();
     }
 
-    public AirCompanyEntity findById(Integer id) throws SQLException {
+    public AirCompanyEntity findById(final Integer id) throws SQLException {
         return new AirCompanyDaoImpl().findById(id);
     }
 
-    public int create(AirCompanyEntity entity) throws SQLException {
+    public int create(final AirCompanyEntity entity) throws SQLException {
         return new AirCompanyDaoImpl().create(entity);
     }
 
-    public int update(AirCompanyEntity entity) throws SQLException {
+    public int update(final AirCompanyEntity entity) throws SQLException {
         return new AirCompanyDaoImpl().update(entity);
     }
 
-    public int delete(Integer id) throws SQLException {
+    public int delete(final Integer id) throws SQLException {
         return new AirCompanyDaoImpl().delete(id);
     }
 }

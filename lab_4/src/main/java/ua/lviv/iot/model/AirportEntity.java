@@ -39,9 +39,9 @@ public class AirportEntity {
 
     @Override
     public String toString() {
-        return "AirportEntity{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                '}';
+        return "AirportEntity{"
+                + "id=" + id
+                + ", name='" + name + '\''
+                + '}';
     }
 }

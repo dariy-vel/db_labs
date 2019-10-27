@@ -41,9 +41,8 @@ public class AirCompanyDaoImpl implements AirCompanyDAO {
         try (PreparedStatement ps = connection.prepareStatement(FIND_BY_ID)) {
             ps.setInt(1, id);
             try (ResultSet resultSet = ps.executeQuery()) {
-                while (resultSet.next()) {
+                if (resultSet.next()) {
                     airCompanyEntity = (AirCompanyEntity) new Transformer(AirCompanyEntity.class).fromResultSetToEntity(resultSet);
-                    break;
                 }
             }
         }

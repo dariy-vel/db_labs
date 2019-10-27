@@ -11,19 +11,19 @@ public class AirportService {
         return new AirportDaoImpl().findAll();
     }
 
-    public AirportEntity findById(Integer id) throws SQLException {
+    public AirportEntity findById(final Integer id) throws SQLException {
         return new AirportDaoImpl().findById(id);
     }
 
-    public int create(AirportEntity entity) throws SQLException {
+    public int create(final AirportEntity entity) throws SQLException {
         return new AirportDaoImpl().create(entity);
     }
 
-    public int update(AirportEntity entity) throws SQLException {
+    public int update(final AirportEntity entity) throws SQLException {
         return new AirportDaoImpl().update(entity);
     }
 
-    public int delete(Integer id) throws SQLException {
+    public int delete(final Integer id) throws SQLException {
         return new AirportDaoImpl().delete(id);
     }
 }

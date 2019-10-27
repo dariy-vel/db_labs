@@ -6,15 +6,18 @@ import ua.lviv.iot.model.AirportEntity;
 import ua.lviv.iot.model.CountryEntity;
 import ua.lviv.iot.model.FlightEntity;
 import ua.lviv.iot.model.ModelEntity;
+import ua.lviv.iot.model.metadata.TableMetaData;
+import ua.lviv.iot.persitant.ConnectionManager;
 import ua.lviv.iot.service.AirCompanyService;
 import ua.lviv.iot.service.AircraftService;
 import ua.lviv.iot.service.AirportService;
 import ua.lviv.iot.service.CountryService;
 import ua.lviv.iot.service.FlightService;
+import ua.lviv.iot.service.MetaDataService;
 import ua.lviv.iot.service.ModelService;
 
+import java.sql.Connection;
 import java.sql.SQLException;
-import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -22,7 +25,7 @@ import java.util.Map;
 import java.util.Scanner;
 
 public class MyView {
-    private static Scanner input = new Scanner(System.in);
+    private static Scanner input = new Scanner(System.in, "UTF-8");
     private Map<String, String> menu;
     private Map<String, Printable> methodsMenu;
 
@@ -77,7 +80,7 @@ public class MyView {
         menu.put("Q", "   Q - exit");
 
         methodsMenu.put("A", this::selectAllTable);
-//        methodsMenu.put("B", this::takeStructureOfDB);
+        methodsMenu.put("B", this::takeStructureOfDB);
 
         methodsMenu.put("11", this::createForCountry);
         methodsMenu.put("12", this::updateCountry);
@@ -125,16 +128,16 @@ public class MyView {
         selectFlight();
     }
 
-//    private void takeStructureOfDB() throws SQLException {
-//        Connection connection = ConnectionManager.getConnection();
-//        MetaDataService metaDataService = new MetaDataService();
-//        List<TableMetaData> tables = metaDataService.getTablesStructure();
-//        System.out.println("TABLE OF DATABASE: " + connection.getCatalog());
-//
-//        for (TableMetaData table : tables) {
-//            System.out.println(table);
-//        }
-//    }
+    private void takeStructureOfDB() throws SQLException {
+        Connection connection = ConnectionManager.getConnection();
+        MetaDataService metaDataService = new MetaDataService();
+        List<TableMetaData> tables = metaDataService.getTablesStructure();
+        System.out.println("TABLE OF DATABASE: " + connection.getCatalog());
+
+        for (TableMetaData table : tables) {
+            System.out.println(table);
+        }
+    }
 
 
     //------------------------------------------------------------------------//
@@ -143,7 +146,7 @@ public class MyView {
         Integer id = Integer.parseInt(input.nextLine());
         CountryService countryService = new CountryService();
         int count = countryService.delete(id);
-        System.out.printf("There are deleted %d rows\n", count);
+        System.out.printf("There are deleted %d rows%n", count);
     }
 
     private void createForCountry() throws SQLException {
@@ -155,7 +158,7 @@ public class MyView {
 
         CountryService countryService = new CountryService();
         int count = countryService.create(entity);
-        System.out.printf("There are created %d rows\n", count);
+        System.out.printf("There are created %d rows%n", count);
     }
 
     private void updateCountry() throws SQLException {
@@ -167,7 +170,7 @@ public class MyView {
 
         CountryService countryService = new CountryService();
         int count = countryService.update(entity);
-        System.out.printf("There are updated %d rows\n", count);
+        System.out.printf("There are updated %d rows%n", count);
     }
 
     private void selectCountry() throws SQLException {
@@ -193,7 +196,7 @@ public class MyView {
         Integer id = Integer.parseInt(input.nextLine());
         AirCompanyService airCompanyService = new AirCompanyService();
         int count = airCompanyService.delete(id);
-        System.out.printf("There are deleted %d rows\n", count);
+        System.out.printf("There are deleted %d rows%n", count);
     }
 
     private void createForAirCompany() throws SQLException {
@@ -202,12 +205,12 @@ public class MyView {
         System.out.println("Input name for AirCompany: ");
         String name = input.nextLine();
         System.out.println("Input country_id for AirCompany: ");
-        Integer country_id = Integer.parseInt(input.nextLine());
-        AirCompanyEntity entity = new AirCompanyEntity(id, name, country_id);
+        Integer countryId = Integer.parseInt(input.nextLine());
+        AirCompanyEntity entity = new AirCompanyEntity(id, name, countryId);
 
         AirCompanyService airCompanyService = new AirCompanyService();
         int count = airCompanyService.create(entity);
-        System.out.printf("There are created %d rows\n", count);
+        System.out.printf("There are created %d rows%n", count);
     }
 
     private void updateAirCompany() throws SQLException {
@@ -216,12 +219,12 @@ public class MyView {
         System.out.println("Input name for AirCompany: ");
         String name = input.nextLine();
         System.out.println("Input country_id for AirCompany: ");
-        Integer country_id = Integer.parseInt(input.nextLine());
-        AirCompanyEntity entity = new AirCompanyEntity(id, name, country_id);
+        Integer countryId = Integer.parseInt(input.nextLine());
+        AirCompanyEntity entity = new AirCompanyEntity(id, name, countryId);
 
         AirCompanyService airCompanyService = new AirCompanyService();
         int count = airCompanyService.update(entity);
-        System.out.printf("There are updated %d rows\n", count);
+        System.out.printf("There are updated %d rows%n", count);
     }
 
     private void selectAirCompany() throws SQLException {
@@ -247,7 +250,7 @@ public class MyView {
         Integer id = Integer.parseInt(input.nextLine());
         AirportService airportService = new AirportService();
         int count = airportService.delete(id);
-        System.out.printf("There are deleted %d rows\n", count);
+        System.out.printf("There are deleted %d rows%n", count);
     }
 
     private void createForAirport() throws SQLException {
@@ -259,7 +262,7 @@ public class MyView {
 
         AirportService airportService = new AirportService();
         int count = airportService.create(entity);
-        System.out.printf("There are created %d rows\n", count);
+        System.out.printf("There are created %d rows%n", count);
     }
 
     private void updateAirport() throws SQLException {
@@ -271,7 +274,7 @@ public class MyView {
 
         AirportService airportService = new AirportService();
         int count = airportService.update(entity);
-        System.out.printf("There are updated %d rows\n", count);
+        System.out.printf("There are updated %d rows%n", count);
     }
 
     private void selectAirport() throws SQLException {
@@ -297,7 +300,7 @@ public class MyView {
         Integer id = Integer.parseInt(input.nextLine());
         ModelService modelService = new ModelService();
         int count = modelService.delete(id);
-        System.out.printf("There are deleted %d rows\n", count);
+        System.out.printf("There are deleted %d rows%n", count);
     }
 
     private void createForModel() throws SQLException {
@@ -311,7 +314,7 @@ public class MyView {
 
         ModelService modelService = new ModelService();
         int count = modelService.create(entity);
-        System.out.printf("There are created %d rows\n", count);
+        System.out.printf("There are created %d rows%n", count);
     }
 
     private void updateModel() throws SQLException {
@@ -325,7 +328,7 @@ public class MyView {
 
         ModelService modelService = new ModelService();
         int count = modelService.update(entity);
-        System.out.printf("There are updated %d rows\n", count);
+        System.out.printf("There are updated %d rows%n", count);
     }
 
     private void selectModel() throws SQLException {
@@ -351,7 +354,7 @@ public class MyView {
         Integer id = Integer.parseInt(input.nextLine());
         AircraftService aircraftService = new AircraftService();
         int count = aircraftService.delete(id);
-        System.out.printf("There are deleted %d rows\n", count);
+        System.out.printf("There are deleted %d rows%n", count);
     }
 
     private void createForAircraft() throws SQLException {
@@ -376,7 +379,7 @@ public class MyView {
 
         AircraftService aircraftService = new AircraftService();
         int count = aircraftService.create(entity);
-        System.out.printf("There are created %d rows\n", count);
+        System.out.printf("There are created %d rows%n", count);
     }
 
     private void updateAircraft() throws SQLException {
@@ -401,7 +404,7 @@ public class MyView {
 
         AircraftService aircraftService = new AircraftService();
         int count = aircraftService.update(entity);
-        System.out.printf("There are updated %d rows\n", count);
+        System.out.printf("There are updated %d rows%n", count);
     }
 
     private void selectAircraft() throws SQLException {
@@ -427,7 +430,7 @@ public class MyView {
         Integer id = Integer.parseInt(input.nextLine());
         FlightService flightService = new FlightService();
         int count = flightService.delete(id);
-        System.out.printf("There are deleted %d rows\n", count);
+        System.out.printf("There are deleted %d rows%n", count);
     }
 
     private void createForFlight() throws SQLException {
@@ -452,7 +455,7 @@ public class MyView {
 
         FlightService flightService = new FlightService();
         int count = flightService.create(entity);
-        System.out.printf("There are created %d rows\n", count);
+        System.out.printf("There are created %d rows%n", count);
     }
 
     private void updateFlight() throws SQLException {
@@ -477,7 +480,7 @@ public class MyView {
 
         FlightService flightService = new FlightService();
         int count = flightService.update(entity);
-        System.out.printf("There are updated %d rows\n", count);
+        System.out.printf("There are updated %d rows%n", count);
     }
 
     private void selectFlight() throws SQLException {
@@ -500,15 +503,21 @@ public class MyView {
     //------------------------------------------------------------------------//
     private void outputMenu() {
         System.out.println("\nMENU:");
-        for (String key : menu.keySet())
-            if (key.length() == 1) System.out.println(menu.get(key));
+        for (Map.Entry<String, String> entry : menu.entrySet()) {
+            if (entry.getKey().length() == 1) {
+                System.out.println(entry.getValue());
+            }
+        }
     }
 
-    private void outputSubMenu(String fig) {
+    private void outputSubMenu(final String fig) {
 
         System.out.println("\nSubMENU:");
-        for (String key : menu.keySet())
-            if (key.length() != 1 && key.substring(0, 1).equals(fig)) System.out.println(menu.get(key));
+        for (Map.Entry<String, String> entry : menu.entrySet()) {
+            if (entry.getKey().length() != 1 && entry.getKey().substring(0, 1).equals(fig)) {
+                System.out.println(entry.getValue());
+            }
+        }
     }
 
     public void show() {
@@ -527,6 +536,7 @@ public class MyView {
             try {
                 methodsMenu.get(keyMenu).print();
             } catch (Exception e) {
+                System.out.println(e.getMessage());
             }
         } while (!keyMenu.equals("Q"));
     }

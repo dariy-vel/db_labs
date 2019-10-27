@@ -41,9 +41,8 @@ public class ModelDaoImpl implements ModelDAO {
         try (PreparedStatement ps = connection.prepareStatement(FIND_BY_ID)) {
             ps.setInt(1, id);
             try (ResultSet resultSet = ps.executeQuery()) {
-                while (resultSet.next()) {
+                if (resultSet.next()) {
                     modelEntity = (ModelEntity) new Transformer(ModelEntity.class).fromResultSetToEntity(resultSet);
-                    break;
                 }
             }
         }

@@ -13,7 +13,7 @@ public class FlightEntity {
     private Integer id;
 
     @Column(name = "aircraft_id")
-    private Integer aircraft_id;
+    private Integer aircraftId;
 
     @Column(name = "from_airport_id")
     private Integer fromAirportId;
@@ -36,18 +36,18 @@ public class FlightEntity {
     public FlightEntity() {
     }
 
-    public FlightEntity(final Integer id, final Integer aircraft_id, final Integer fromAirportId,
+    public FlightEntity(final Integer id, final Integer aircraftId, final Integer fromAirportId,
                         final Integer toAirportId, final Timestamp scheduledDepartureTime,
                         final Timestamp scheduledArrivalTime, final Timestamp actualDepartureTime,
                         final Timestamp estArrivalTime) {
         this.id = id;
-        this.aircraft_id = aircraft_id;
+        this.aircraftId = aircraftId;
         this.fromAirportId = fromAirportId;
         this.toAirportId = toAirportId;
-        this.scheduledDepartureTime = scheduledDepartureTime;
-        this.scheduledArrivalTime = scheduledArrivalTime;
-        this.actualDepartureTime = actualDepartureTime;
-        this.estArrivalTime = estArrivalTime;
+        this.scheduledDepartureTime = new Timestamp(scheduledDepartureTime.getTime());
+        this.scheduledArrivalTime = new Timestamp(scheduledArrivalTime.getTime());
+        this.actualDepartureTime = new Timestamp(actualDepartureTime.getTime());
+        this.estArrivalTime = new Timestamp(estArrivalTime.getTime());
     }
 
     public Integer getId() {
@@ -58,12 +58,12 @@ public class FlightEntity {
         this.id = id;
     }
 
-    public Integer getAircraft_id() {
-        return aircraft_id;
+    public Integer getAircraftId() {
+        return aircraftId;
     }
 
-    public void setAircraft_id(final Integer aircraft_id) {
-        this.aircraft_id = aircraft_id;
+    public void setAircraftId(final Integer aircraftId) {
+        this.aircraftId = aircraftId;
     }
 
     public Integer getFromAirportId() {
@@ -83,48 +83,48 @@ public class FlightEntity {
     }
 
     public Timestamp getScheduledDepartureTime() {
-        return scheduledDepartureTime;
+        return new Timestamp(scheduledDepartureTime.getTime());
     }
 
     public void setScheduledDepartureTime(final Timestamp scheduledDepartureTime) {
-        this.scheduledDepartureTime = scheduledDepartureTime;
+        this.scheduledDepartureTime = new Timestamp(scheduledDepartureTime.getTime());
     }
 
     public Timestamp getScheduledArrivalTime() {
-        return scheduledArrivalTime;
+        return new Timestamp(scheduledArrivalTime.getTime());
     }
 
     public void setScheduledArrivalTime(final Timestamp scheduledArrivalTime) {
-        this.scheduledArrivalTime = scheduledArrivalTime;
+        this.scheduledArrivalTime = new Timestamp(scheduledArrivalTime.getTime());
     }
 
     public Timestamp getActualDepartureTime() {
-        return actualDepartureTime;
+        return new Timestamp(actualDepartureTime.getTime());
     }
 
     public void setActualDepartureTime(final Timestamp actualDepartureTime) {
-        this.actualDepartureTime = actualDepartureTime;
+        this.actualDepartureTime = new Timestamp(actualDepartureTime.getTime());
     }
 
     public Timestamp getEstArrivalTime() {
-        return estArrivalTime;
+        return new Timestamp(estArrivalTime.getTime());
     }
 
     public void setEstArrivalTime(final Timestamp estArrivalTime) {
-        this.estArrivalTime = estArrivalTime;
+        this.estArrivalTime = new Timestamp(estArrivalTime.getTime());
     }
 
     @Override
     public String toString() {
-        return "FlightEntity{" +
-                "id=" + id +
-                ", aircraft_id=" + aircraft_id +
-                ", fromAirportId=" + fromAirportId +
-                ", toAirportId=" + toAirportId +
-                ", scheduledDepartureTime=" + scheduledDepartureTime +
-                ", scheduledArrivalTime=" + scheduledArrivalTime +
-                ", actualDepartureTime=" + actualDepartureTime +
-                ", estArrivalTime=" + estArrivalTime +
-                '}';
+        return "FlightEntity{"
+                + "id=" + id
+                + ", aircraft_id=" + aircraftId
+                + ", fromAirportId=" + fromAirportId
+                + ", toAirportId=" + toAirportId
+                + ", scheduledDepartureTime=" + scheduledDepartureTime
+                + ", scheduledArrivalTime=" + scheduledArrivalTime
+                + ", actualDepartureTime=" + actualDepartureTime
+                + ", estArrivalTime=" + estArrivalTime
+                + '}';
     }
 }

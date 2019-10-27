@@ -45,10 +45,8 @@ public class FlightDaoImpl implements FlightDAO {
         try (PreparedStatement ps = connection.prepareStatement(FIND_BY_ID)) {
             ps.setInt(1, id);
             try (ResultSet resultSet = ps.executeQuery()) {
-                while (resultSet.next()) {
-                    flightEntity =
-                            (FlightEntity) new Transformer(FlightEntity.class).fromResultSetToEntity(resultSet);
-                    break;
+                if (resultSet.next()) {
+                    flightEntity = (FlightEntity) new Transformer(FlightEntity.class).fromResultSetToEntity(resultSet);
                 }
             }
         }
@@ -60,7 +58,7 @@ public class FlightDaoImpl implements FlightDAO {
         Connection connection = ConnectionManager.getConnection();
         try (PreparedStatement ps = connection.prepareStatement(CREATE)) {
             ps.setInt(1, entity.getId());
-            ps.setInt(2, entity.getAircraft_id());
+            ps.setInt(2, entity.getAircraftId());
             ps.setInt(3, entity.getFromAirportId());
             ps.setInt(4, entity.getToAirportId());
             ps.setTimestamp(5, entity.getScheduledDepartureTime());
@@ -75,7 +73,7 @@ public class FlightDaoImpl implements FlightDAO {
     public int update(final FlightEntity entity) throws SQLException {
         Connection connection = ConnectionManager.getConnection();
         try (PreparedStatement ps = connection.prepareStatement(UPDATE)) {
-            ps.setInt(1, entity.getAircraft_id());
+            ps.setInt(1, entity.getAircraftId());
             ps.setInt(2, entity.getFromAirportId());
             ps.setInt(3, entity.getToAirportId());
             ps.setTimestamp(4, entity.getScheduledDepartureTime());

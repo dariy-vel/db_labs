@@ -51,10 +51,10 @@ public class AirCompanyEntity {
 
     @Override
     public String toString() {
-        return "AirCompanyEntity{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", country_id=" + countryId +
-                '}';
+        return "AirCompanyEntity{"
+                + "id=" + id
+                + ", name='" + name + '\''
+                + ", country_id=" + countryId
+                + '}';
     }
 }

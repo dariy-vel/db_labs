@@ -39,9 +39,9 @@ public class CountryEntity {
 
     @Override
     public String toString() {
-        return "CountryEntity{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                '}';
+        return "CountryEntity{"
+                + "id=" + id
+                + ", name='" + name + '\''
+                + '}';
     }
 }

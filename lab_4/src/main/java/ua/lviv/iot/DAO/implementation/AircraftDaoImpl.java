@@ -43,10 +43,8 @@ public class AircraftDaoImpl implements AircraftDAO {
         try (PreparedStatement ps = connection.prepareStatement(FIND_BY_ID)) {
             ps.setInt(1, id);
             try (ResultSet resultSet = ps.executeQuery()) {
-                while (resultSet.next()) {
-                    aircraftEntity =
-                            (AircraftEntity) new Transformer(AircraftEntity.class).fromResultSetToEntity(resultSet);
-                    break;
+                if (resultSet.next()) {
+                    aircraftEntity = (AircraftEntity) new Transformer(AircraftEntity.class).fromResultSetToEntity(resultSet);
                 }
             }
         }

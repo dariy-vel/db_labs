@@ -11,19 +11,19 @@ public class ModelService {
         return new ModelDaoImpl().findAll();
     }
 
-    public ModelEntity findById(Integer id) throws SQLException {
+    public ModelEntity findById(final Integer id) throws SQLException {
         return new ModelDaoImpl().findById(id);
     }
 
-    public int create(ModelEntity entity) throws SQLException {
+    public int create(final ModelEntity entity) throws SQLException {
         return new ModelDaoImpl().create(entity);
     }
 
-    public int update(ModelEntity entity) throws SQLException {
+    public int update(final ModelEntity entity) throws SQLException {
         return new ModelDaoImpl().update(entity);
     }
 
-    public int delete(Integer id) throws SQLException {
+    public int delete(final Integer id) throws SQLException {
         return new ModelDaoImpl().delete(id);
     }
 }

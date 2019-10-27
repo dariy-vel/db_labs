@@ -51,10 +51,10 @@ public class ModelEntity {
 
     @Override
     public String toString() {
-        return "ModelEntity{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", manufacturer='" + manufacturer + '\'' +
-                '}';
+        return "ModelEntity{"
+                + "id=" + id
+                + ", name='" + name + '\''
+                + ", manufacturer='" + manufacturer + '\''
+                + '}';
     }
 }

@@ -11,19 +11,19 @@ public class CountryService {
         return new CountryDaoImpl().findAll();
     }
 
-    public CountryEntity findById(Integer id) throws SQLException {
+    public CountryEntity findById(final Integer id) throws SQLException {
         return new CountryDaoImpl().findById(id);
     }
 
-    public int create(CountryEntity entity) throws SQLException {
+    public int create(final CountryEntity entity) throws SQLException {
         return new CountryDaoImpl().create(entity);
     }
 
-    public int update(CountryEntity entity) throws SQLException {
+    public int update(final CountryEntity entity) throws SQLException {
         return new CountryDaoImpl().update(entity);
     }
 
-    public int delete(Integer id) throws SQLException {
+    public int delete(final Integer id) throws SQLException {
         return new CountryDaoImpl().delete(id);
     }
 }

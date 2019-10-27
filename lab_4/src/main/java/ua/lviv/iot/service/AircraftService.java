@@ -11,19 +11,19 @@ public class AircraftService {
         return new AircraftDaoImpl().findAll();
     }
 
-    public AircraftEntity findById(Integer id) throws SQLException {
+    public AircraftEntity findById(final Integer id) throws SQLException {
         return new AircraftDaoImpl().findById(id);
     }
 
-    public int create(AircraftEntity entity) throws SQLException {
+    public int create(final AircraftEntity entity) throws SQLException {
         return new AircraftDaoImpl().create(entity);
     }
 
-    public int update(AircraftEntity entity) throws SQLException {
+    public int update(final AircraftEntity entity) throws SQLException {
         return new AircraftDaoImpl().update(entity);
     }
 
-    public int delete(Integer id) throws SQLException {
+    public int delete(final Integer id) throws SQLException {
         return new AircraftDaoImpl().delete(id);
     }
 }

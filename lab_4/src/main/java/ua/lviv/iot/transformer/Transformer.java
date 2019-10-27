@@ -12,11 +12,11 @@ import java.sql.Timestamp;
 public class Transformer<T> {
     private final Class<T> clazz;
 
-    public Transformer(Class<T> clazz) {
+    public Transformer(final Class<T> clazz) {
         this.clazz = clazz;
     }
 
-    public Object fromResultSetToEntity(ResultSet rs)
+    public Object fromResultSetToEntity(final ResultSet rs)
             throws SQLException {
         //create new object
         Object entity = null;
@@ -29,7 +29,6 @@ public class Transformer<T> {
                     if (field.isAnnotationPresent(Column.class)) {
                         Column column = (Column) field.getAnnotation(Column.class);
                         String name = column.name();
-                        int length = column.length();
                         field.setAccessible(true);
                         Class fieldType = field.getType();
                         if (fieldType == String.class) {
@@ -46,6 +45,7 @@ public class Transformer<T> {
             }
         } catch (InstantiationException | InvocationTargetException
                 | IllegalAccessException | NoSuchMethodException e) {
+            System.out.println(e.getMessage());
         }
         return entity;
     }

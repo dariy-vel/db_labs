@@ -35,15 +35,14 @@ public class CountryDaoImpl implements CountryDAO {
     }
 
     @Override
-    public CountryEntity findById(Integer id) throws SQLException {
+    public CountryEntity findById(final Integer id) throws SQLException {
         CountryEntity entity = null;
         Connection connection = ConnectionManager.getConnection();
         try (PreparedStatement ps = connection.prepareStatement(FIND_BY_ID)) {
             ps.setInt(1, id);
             try (ResultSet resultSet = ps.executeQuery()) {
-                while (resultSet.next()) {
+                if (resultSet.next()) {
                     entity = (CountryEntity) new Transformer(CountryEntity.class).fromResultSetToEntity(resultSet);
-                    break;
                 }
             }
         }

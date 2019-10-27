@@ -113,15 +113,15 @@ public class AircraftEntity {
 
     @Override
     public String toString() {
-        return "AircraftEntity{" +
-                "id=" + id +
-                ", boardNumber='" + boardNumber + '\'' +
-                ", registrationNumber='" + registrationNumber + '\'' +
-                ", registrationCountryId=" + registrationCountryId +
-                ", airCompanyId=" + airCompanyId +
-                ", modelId=" + modelId +
-                ", longitude=" + longitude +
-                ", latitude=" + latitude +
-                '}';
+        return "AircraftEntity{"
+                + "id=" + id
+                + ", boardNumber='" + boardNumber + '\''
+                + ", registrationNumber='" + registrationNumber + '\''
+                + ", registrationCountryId=" + registrationCountryId
+                + ", airCompanyId=" + airCompanyId
+                + ", modelId=" + modelId
+                + ", longitude=" + longitude
+                + ", latitude=" + latitude
+                + '}';
     }
 }
