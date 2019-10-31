@@ -6,14 +6,11 @@ import ua.lviv.iot.model.AirportEntity;
 import ua.lviv.iot.model.CountryEntity;
 import ua.lviv.iot.model.FlightEntity;
 import ua.lviv.iot.model.ModelEntity;
-import ua.lviv.iot.model.metadata.TableMetaData;
-import ua.lviv.iot.persitant.ConnectionManager;
 import ua.lviv.iot.service.AirCompanyService;
 import ua.lviv.iot.service.AircraftService;
 import ua.lviv.iot.service.AirportService;
 import ua.lviv.iot.service.CountryService;
 import ua.lviv.iot.service.FlightService;
-import ua.lviv.iot.service.MetaDataService;
 import ua.lviv.iot.service.ModelService;
 
 import java.sql.Connection;
@@ -33,7 +30,6 @@ public class MyView {
         menu = new LinkedHashMap<>();
         methodsMenu = new LinkedHashMap<>();
         menu.put("A", "   A - Select all table");
-        menu.put("B", "   B - Select structure of DB");
 
         menu.put("1", "   1 - Table: Country");
         menu.put("11", "  11 - Create for Country");
@@ -80,7 +76,6 @@ public class MyView {
         menu.put("Q", "   Q - exit");
 
         methodsMenu.put("A", this::selectAllTable);
-        methodsMenu.put("B", this::takeStructureOfDB);
 
         methodsMenu.put("11", this::createForCountry);
         methodsMenu.put("12", this::updateCountry);
@@ -126,17 +121,6 @@ public class MyView {
         selectModel();
         selectAircraft();
         selectFlight();
-    }
-
-    private void takeStructureOfDB() throws SQLException {
-        Connection connection = ConnectionManager.getConnection();
-        MetaDataService metaDataService = new MetaDataService();
-        List<TableMetaData> tables = metaDataService.getTablesStructure();
-        System.out.println("TABLE OF DATABASE: " + connection.getCatalog());
-
-        for (TableMetaData table : tables) {
-            System.out.println(table);
-        }
     }
 
 

@@ -1,15 +1,12 @@
 package ua.lviv.iot.DAO.implementation;
 
+import org.hibernate.Session;
+import org.hibernate.Transaction;
 import ua.lviv.iot.DAO.FlightDAO;
 import ua.lviv.iot.model.FlightEntity;
-import ua.lviv.iot.persitant.ConnectionManager;
-import ua.lviv.iot.transformer.Transformer;
+import ua.lviv.iot.util.HibernateUtil;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,13 +24,8 @@ public class FlightDaoImpl implements FlightDAO {
     @Override
     public List<FlightEntity> findAll() throws SQLException {
         List<FlightEntity> flights = new ArrayList<>();
-        Connection connection = ConnectionManager.getConnection();
-        try (Statement statement = connection.createStatement()) {
-            try (ResultSet resultSet = statement.executeQuery(FIND_ALL)) {
-                while (resultSet.next()) {
-                    flights.add((FlightEntity) new Transformer(FlightEntity.class).fromResultSetToEntity(resultSet));
-                }
-            }
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            flights = (List<FlightEntity>) session.createQuery("FROM FlightEntity").list();
         }
         return flights;
     }
@@ -41,56 +33,50 @@ public class FlightDaoImpl implements FlightDAO {
     @Override
     public FlightEntity findById(final Integer id) throws SQLException {
         FlightEntity flightEntity = null;
-        Connection connection = ConnectionManager.getConnection();
-        try (PreparedStatement ps = connection.prepareStatement(FIND_BY_ID)) {
-            ps.setInt(1, id);
-            try (ResultSet resultSet = ps.executeQuery()) {
-                if (resultSet.next()) {
-                    flightEntity = (FlightEntity) new Transformer(FlightEntity.class).fromResultSetToEntity(resultSet);
-                }
-            }
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            flightEntity = session.get(FlightEntity.class, id);
         }
         return flightEntity;
     }
 
     @Override
     public int create(final FlightEntity entity) throws SQLException {
-        Connection connection = ConnectionManager.getConnection();
-        try (PreparedStatement ps = connection.prepareStatement(CREATE)) {
-            ps.setInt(1, entity.getId());
-            ps.setInt(2, entity.getAircraftId());
-            ps.setInt(3, entity.getFromAirportId());
-            ps.setInt(4, entity.getToAirportId());
-            ps.setTimestamp(5, entity.getScheduledDepartureTime());
-            ps.setTimestamp(6, entity.getScheduledArrivalTime());
-            ps.setTimestamp(7, entity.getActualDepartureTime());
-            ps.setTimestamp(8, entity.getEstArrivalTime());
-            return ps.executeUpdate();
+        try(Session session = HibernateUtil.getSessionFactory().openSession()){
+            Transaction transaction = session.beginTransaction();
+            session.update(entity);
+            transaction.commit();
+            return 1;
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return 0;
         }
     }
 
     @Override
     public int update(final FlightEntity entity) throws SQLException {
-        Connection connection = ConnectionManager.getConnection();
-        try (PreparedStatement ps = connection.prepareStatement(UPDATE)) {
-            ps.setInt(1, entity.getAircraftId());
-            ps.setInt(2, entity.getFromAirportId());
-            ps.setInt(3, entity.getToAirportId());
-            ps.setTimestamp(4, entity.getScheduledDepartureTime());
-            ps.setTimestamp(5, entity.getScheduledArrivalTime());
-            ps.setTimestamp(6, entity.getActualDepartureTime());
-            ps.setTimestamp(7, entity.getEstArrivalTime());
-            ps.setInt(8, entity.getId());
-            return ps.executeUpdate();
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            Transaction transaction = session.beginTransaction();
+            session.update(entity);
+            transaction.commit();
+            return 1;
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return 0;
         }
     }
 
     @Override
     public int delete(final Integer id) throws SQLException {
-        Connection connection = ConnectionManager.getConnection();
-        try (PreparedStatement ps = connection.prepareStatement(DELETE)) {
-            ps.setInt(1, id);
-            return ps.executeUpdate();
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            Transaction tx1 = session.beginTransaction();
+            FlightEntity entity;
+            entity = (FlightEntity) session.load(FlightEntity.class, id);
+            session.delete(entity);
+            tx1.commit();
+            return 1;
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return 0;
         }
     }
 }

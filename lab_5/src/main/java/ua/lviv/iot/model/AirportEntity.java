@@ -1,16 +1,21 @@
 package ua.lviv.iot.model;
 
-import ua.lviv.iot.model.Annotation.Column;
-import ua.lviv.iot.model.Annotation.PrimaryKey;
-import ua.lviv.iot.model.Annotation.Table;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
-@Table(name = "airport")
+@Entity
+@Table(name = "airport", schema = "mydb")
 public class AirportEntity {
-    @PrimaryKey
-    @Column(name = "id")
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false)
     private Integer id;
 
-    @Column(name = "name", length = 90)
+    @Column(name = "name", nullable = false, length = 90)
     private String name;
 
     public AirportEntity() {

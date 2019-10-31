@@ -1,35 +1,21 @@
 package ua.lviv.iot.DAO.implementation;
 
+import org.hibernate.Session;
+import org.hibernate.Transaction;
 import ua.lviv.iot.DAO.AirCompanyDAO;
 import ua.lviv.iot.model.AirCompanyEntity;
-import ua.lviv.iot.persitant.ConnectionManager;
-import ua.lviv.iot.transformer.Transformer;
+import ua.lviv.iot.util.HibernateUtil;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
 public class AirCompanyDaoImpl implements AirCompanyDAO {
-    private static final String FIND_ALL = "SELECT * FROM air_company";
-    private static final String DELETE = "DELETE FROM air_company WHERE id=?";
-    private static final String CREATE = "INSERT air_company (id, name, country_id) VALUES (?, ?, ?)";
-    private static final String UPDATE = "UPDATE air_company SET name=?, country_id=? WHERE id=?";
-    private static final String FIND_BY_ID = "SELECT * FROM air_company WHERE id=?";
-
     @Override
     public List<AirCompanyEntity> findAll() throws SQLException {
         List<AirCompanyEntity> airCompanies = new ArrayList<>();
-        Connection connection = ConnectionManager.getConnection();
-        try (Statement statement = connection.createStatement()) {
-            try (ResultSet resultSet = statement.executeQuery(FIND_ALL)) {
-                while (resultSet.next()) {
-                    airCompanies.add((AirCompanyEntity) new Transformer(AirCompanyEntity.class).fromResultSetToEntity(resultSet));
-                }
-            }
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            airCompanies = (List<AirCompanyEntity>) session.createQuery("FROM AirCompanyEntity").list();
         }
         return airCompanies;
     }
@@ -37,46 +23,50 @@ public class AirCompanyDaoImpl implements AirCompanyDAO {
     @Override
     public AirCompanyEntity findById(final Integer id) throws SQLException {
         AirCompanyEntity airCompanyEntity = null;
-        Connection connection = ConnectionManager.getConnection();
-        try (PreparedStatement ps = connection.prepareStatement(FIND_BY_ID)) {
-            ps.setInt(1, id);
-            try (ResultSet resultSet = ps.executeQuery()) {
-                if (resultSet.next()) {
-                    airCompanyEntity = (AirCompanyEntity) new Transformer(AirCompanyEntity.class).fromResultSetToEntity(resultSet);
-                }
-            }
+        try(Session session = HibernateUtil.getSessionFactory().openSession()){
+            airCompanyEntity = session.get(AirCompanyEntity.class, id);
         }
         return airCompanyEntity;
     }
 
     @Override
     public int create(final AirCompanyEntity entity) throws SQLException {
-        Connection connection = ConnectionManager.getConnection();
-        try (PreparedStatement ps = connection.prepareStatement(CREATE)) {
-            ps.setInt(1, entity.getId());
-            ps.setString(2, entity.getName());
-            ps.setInt(3, entity.getCountryId());
-            return ps.executeUpdate();
+        try(Session session = HibernateUtil.getSessionFactory().openSession()){
+            Transaction transaction = session.beginTransaction();
+            session.save(entity);
+            transaction.commit();
+            return 1;
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return 0;
         }
     }
 
     @Override
     public int update(final AirCompanyEntity entity) throws SQLException {
-        Connection connection = ConnectionManager.getConnection();
-        try (PreparedStatement ps = connection.prepareStatement(UPDATE)) {
-            ps.setString(1, entity.getName());
-            ps.setInt(2, entity.getCountryId());
-            ps.setInt(3, entity.getId());
-            return ps.executeUpdate();
+        try(Session session = HibernateUtil.getSessionFactory().openSession()){
+            Transaction transaction = session.beginTransaction();
+            session.update(entity);
+            transaction.commit();
+            return 1;
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return 0;
         }
     }
 
     @Override
     public int delete(final Integer id) throws SQLException {
-        Connection connection = ConnectionManager.getConnection();
-        try (PreparedStatement ps = connection.prepareStatement(DELETE)) {
-            ps.setInt(1, id);
-            return ps.executeUpdate();
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            Transaction tx1 = session.beginTransaction();
+            AirCompanyEntity entity;
+            entity = (AirCompanyEntity) session.load(AirCompanyEntity.class, id);
+            session.delete(entity);
+            tx1.commit();
+            return 1;
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return 0;
         }
     }
 }

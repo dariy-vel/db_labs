@@ -1,15 +1,19 @@
 package ua.lviv.iot.model;
 
-import ua.lviv.iot.model.Annotation.Column;
-import ua.lviv.iot.model.Annotation.PrimaryKey;
-import ua.lviv.iot.model.Annotation.Table;
-
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.sql.Timestamp;
 
-@Table(name = "flight")
+@Entity
+@Table(name = "flight", schema = "mydb")
 public class FlightEntity {
-    @PrimaryKey
-    @Column(name = "id")
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false)
     private Integer id;
 
     @Column(name = "aircraft_id")
